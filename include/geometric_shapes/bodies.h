@@ -120,7 +120,7 @@ public:
   }
 
   /**
-   * \brief If the dimension of the body should be padded, this method sets the pading.
+   * \brief If the dimension of the body should be padded, this method sets the padding.
    * \note This is the dirty version of the function which does not update internal data that depend on the scale.
    *       In the general case, you should call setPadding() instead. Only call this function if you have a series of
    *       calls like setScale/setPadding/setPose/setDimensions and you want to avoid the overhead of updating the

@@ -20,19 +20,17 @@
 namespace geometric_shapes_py
 {
 
-void
-define_aabb(py::object module)
+void define_aabb(py::object module)
 {
   py::class_<geometric_shapes::bodies::AABB>(m, "AABB", R"(
       Represents an axis-aligned bounding box.
       )")
-  .def
-  .def_readonly("source_timestamp", &rmw_service_info_t::source_timestamp)
-  .def_readonly("received_timestamp", &rmw_service_info_t::received_timestamp)
-  .def_readonly("request_id", &rmw_service_info_t::request_id);
+      .def.def_readonly("source_timestamp", &rmw_service_info_t::source_timestamp)
+      .def_readonly("received_timestamp", &rmw_service_info_t::received_timestamp)
+      .def_readonly("request_id", &rmw_service_info_t::request_id);
 
   py::class_<rmw_request_id_t>(module, "rmw_request_id_t")
-  .def_readonly("sequence_number", &rmw_request_id_t::sequence_number);
+      .def_readonly("sequence_number", &rmw_request_id_t::sequence_number);
   // "writer_guid" is not included because it's not used by rclpy
 }
-}  // namespace rclpy
+}  // namespace geometric_shapes_py

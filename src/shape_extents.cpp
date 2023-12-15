@@ -61,8 +61,7 @@ void geometric_shapes::getShapeExtents(const shape_msgs::msg::SolidPrimitive& sh
   }
   else if (shape_msg.type == shape_msgs::msg::SolidPrimitive::CONE)
   {
-    if (shape_msg.dimensions.size() >=
-        geometric_shapes::solidPrimitiveDimCount<shape_msgs::msg::SolidPrimitive::CONE>())
+    if (shape_msg.dimensions.size() >= geometric_shapes::solidPrimitiveDimCount<shape_msgs::msg::SolidPrimitive::CONE>())
     {
       x_extent = y_extent = shape_msg.dimensions[shape_msgs::msg::SolidPrimitive::CONE_RADIUS] * 2.0;
       z_extent = shape_msg.dimensions[shape_msgs::msg::SolidPrimitive::CONE_HEIGHT];

@@ -952,7 +952,7 @@ void bodies::ConvexMesh::useDimensions(const shapes::Shape* shape)
   mesh_data_->mesh_radiusB_ = sqrt(mesh_data_->mesh_radiusB_);
   mesh_data_->triangles_.reserve(num_facets);
 
-  // neccessary for qhull macro
+  // necessary for qhull macro
   facetT* facet;
   FORALLfacets
   {
@@ -1139,7 +1139,7 @@ void bodies::ConvexMesh::computeBoundingSphere(BoundingSphere& sphere) const
 
 void bodies::ConvexMesh::computeBoundingCylinder(BoundingCylinder& cylinder) const
 {
-  // the padding contibution might be smaller in reality, but we want to get it right for the worst case
+  // the padding contribution might be smaller in reality, but we want to get it right for the worst case
   cylinder.length = mesh_data_ ? mesh_data_->bounding_cylinder_.length * scale_ + 2 * padding_ : 0.0;
   cylinder.radius = mesh_data_ ? mesh_data_->bounding_cylinder_.radius * scale_ + padding_ : 0.0;
   // need to do rotation correctly to get pose, which bounding box does

@@ -48,8 +48,7 @@ void geometric_shapes::constructMarkerFromShape(const shape_msgs::msg::SolidPrim
       }
       break;
     case shape_msgs::msg::SolidPrimitive::BOX:
-      if (shape_msg.dimensions.size() <
-          geometric_shapes::solidPrimitiveDimCount<shape_msgs::msg::SolidPrimitive::BOX>())
+      if (shape_msg.dimensions.size() < geometric_shapes::solidPrimitiveDimCount<shape_msgs::msg::SolidPrimitive::BOX>())
         throw std::runtime_error("Insufficient dimensions in box definition");
       else
       {

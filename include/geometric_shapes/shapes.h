@@ -98,7 +98,7 @@ class Sphere : public Shape
 public:
   Sphere();
 
-  /** \brief The radius of the shpere */
+  /** \brief The radius of the sphere */
   Sphere(double r);
 
   /** \brief The type of the shape, as a string */

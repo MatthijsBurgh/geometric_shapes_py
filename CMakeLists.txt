@@ -1,6 +1,15 @@
 cmake_minimum_required(VERSION 3.5)
 project(geometric_shapes_py)
 
+# Default to C++17
+if(NOT CMAKE_CXX_STANDARD)
+  set(CMAKE_CXX_STANDARD 17)
+  set(CMAKE_CXX_STANDARD_REQUIRED ON)
+endif()
+# Default to C11
+if(NOT CMAKE_C_STANDARD)
+  set(CMAKE_C_STANDARD 11)
+endif()
 # Set compile options
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   set(PROJECT_COMPILE_OPTIONS
@@ -14,10 +23,25 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   )
 endif()
 
+# Figure out Python3 debug/release before anything else can find_package it
+if(WIN32 AND CMAKE_BUILD_TYPE STREQUAL "Debug")
+  find_package(python_cmake_module REQUIRED)
+  find_package(PythonExtra REQUIRED)
+
+  # Force FindPython3 to use the debug interpreter where ROS 2 expects it
+  set(Python3_EXECUTABLE "${PYTHON_EXECUTABLE_DEBUG}")
+endif()
+
+find_package(ament_cmake REQUIRED)
+
+# Find python before pybind11
+find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
+
+find_package(pybind11_vendor REQUIRED)
+find_package(pybind11 REQUIRED)
+
 # enables using the Python extensions from the build space for testing
 file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/test_geometric_shapes/__init__.py" "")
-
-# add_subdirectory(src/moveit/moveit_py_utils)
 
 ament_python_install_package(geometric_shapes)
 
@@ -34,23 +58,10 @@ function(configure_build_install_location _library_name)
   )
 endfunction()
 
-# pybind11_add_module(core
-	# src/moveit/core.cpp
-	# src/moveit/moveit_core/collision_detection/collision_common.cpp
-	# src/moveit/moveit_core/collision_detection/collision_matrix.cpp
-	# src/moveit/moveit_core/collision_detection/world.cpp
-	# src/moveit/moveit_core/controller_manager/controller_manager.cpp
-	# src/moveit/moveit_core/kinematic_constraints/utils.cpp
-	# src/moveit/moveit_core/planning_interface/planning_response.cpp
-	# src/moveit/moveit_core/planning_scene/planning_scene.cpp
-	# src/moveit/moveit_core/transforms/transforms.cpp
-	# src/moveit/moveit_core/robot_model/joint_model.cpp
-	# src/moveit/moveit_core/robot_model/joint_model_group.cpp
-	# src/moveit/moveit_core/robot_model/robot_model.cpp
-	# src/moveit/moveit_core/robot_state/robot_state.cpp
-	# src/moveit/moveit_core/robot_trajectory/robot_trajectory.cpp
-	# )
-# target_link_libraries(core PRIVATE moveit_ros_planning::moveit_cpp
+pybind11_add_module(_geometric_shapes_pybind11 SHARED
+  src/geometric_shapes/_geometric_shapes_pybind11.cpp
+)
+# target_link_libraries(_geometric_shapes_pybind11 PRIVATE moveit_ros_planning::moveit_cpp
 				   # rclcpp::rclcpp
 				   # moveit_core::moveit_transforms
 				   # moveit_core::moveit_kinematic_constraints

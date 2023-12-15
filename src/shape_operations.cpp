@@ -100,8 +100,7 @@ Shape* constructShapeFromMsg(const shape_msgs::msg::SolidPrimitive& shape_msg)
   }
   else if (shape_msg.type == shape_msgs::msg::SolidPrimitive::CONE)
   {
-    if (shape_msg.dimensions.size() >=
-        geometric_shapes::solidPrimitiveDimCount<shape_msgs::msg::SolidPrimitive::CONE>())
+    if (shape_msg.dimensions.size() >= geometric_shapes::solidPrimitiveDimCount<shape_msgs::msg::SolidPrimitive::CONE>())
       shape = new Cone(shape_msg.dimensions[shape_msgs::msg::SolidPrimitive::CONE_RADIUS],
                        shape_msg.dimensions[shape_msgs::msg::SolidPrimitive::CONE_HEIGHT]);
   }
