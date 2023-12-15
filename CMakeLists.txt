@@ -33,6 +33,7 @@ if(WIN32 AND CMAKE_BUILD_TYPE STREQUAL "Debug")
 endif()
 
 find_package(ament_cmake REQUIRED)
+find_package(geometric_shapes REQUIRED)
 
 # Find python before pybind11
 find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
@@ -61,6 +62,10 @@ endfunction()
 pybind11_add_module(_geometric_shapes_pybind11 SHARED
   src/geometric_shapes/_geometric_shapes_pybind11.cpp
 )
+target_link_libraries(_geometric_shapes_pybind11 PRIVATE
+  geometric_shapes::geometric_shapes
+)
+configure_build_install_location(_geometric_shapes_pybind11)
 # target_link_libraries(_geometric_shapes_pybind11 PRIVATE moveit_ros_planning::moveit_cpp
 				   # rclcpp::rclcpp
 				   # moveit_core::moveit_transforms

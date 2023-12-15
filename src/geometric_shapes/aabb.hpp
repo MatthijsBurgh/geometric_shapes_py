@@ -20,9 +20,9 @@ namespace py = pybind11;
 
 namespace geometric_shapes_py
 {
-/// Define a pybind11 wrapper for geometric_shapes::bodies::AABB
+/// Define a pybind11 wrapper for bodies::AABB
 /**
  * \param[in] module a pybind11 module to add the definition to
  */
-void define_aabb(py::module module);
+void define_aabb(py::module& module);
 }  // namespace geometric_shapes_py
