@@ -61,11 +61,31 @@ endfunction()
 
 pybind11_add_module(_geometric_shapes_pybind11 SHARED
   src/geometric_shapes/_geometric_shapes_pybind11.cpp
+  src/geometric_shapes/aabb.cpp
+)
+if(CMAKE_C_COMPILER_ID MATCHES "Clang" AND NOT APPLE)
+  target_link_libraries(_geometric_shapes_pybind11 PRIVATE atomic)
+endif()
+
+target_include_directories(_geometric_shapes_pybind11 PRIVATE
+  src/geometric_shapes/
 )
 target_link_libraries(_geometric_shapes_pybind11 PRIVATE
   geometric_shapes::geometric_shapes
 )
 configure_build_install_location(_geometric_shapes_pybind11)
+
+if(NOT WIN32)
+  ament_environment_hooks(
+    "${ament_cmake_package_templates_ENVIRONMENT_HOOK_LIBRARY_PATH}"
+  )
+endif()
+
+
+# Set VERSION from package.xml
+ament_package_xml()
+ament_package()
+
 # target_link_libraries(_geometric_shapes_pybind11 PRIVATE moveit_ros_planning::moveit_cpp
 				   # rclcpp::rclcpp
 				   # moveit_core::moveit_transforms

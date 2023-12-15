@@ -17,14 +17,17 @@
 
 #include <geometric_shapes/aabb.h>
 
+#include "aabb.hpp"
+
 namespace geometric_shapes_py
 {
 
-void define_aabb(py::object& module)
+void define_aabb(py::object& m)
 {
   py::class_<bodies::AABB>(m, "AABB", R"(
       Represents an axis-aligned bounding box.
       )")
       .def("extend_with_transformed_box", &bodies::AABB::extendWithTransformedBox);
 }
+
 }  // namespace geometric_shapes_py

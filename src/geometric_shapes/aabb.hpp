@@ -24,5 +24,5 @@ namespace geometric_shapes_py
 /**
  * \param[in] module a pybind11 module to add the definition to
  */
-void define_aabb(py::module& module);
+void define_aabb(py::module& m);
 }  // namespace geometric_shapes_py
