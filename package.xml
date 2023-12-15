@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>geometric_shapes_py</name>
+  <version>2.1.3</version>
+  <description>This package contains the python wrapper around 'geomteric_shapes,' a library with generic definitions of geometric shapes and bodies.</description>
+
+  <author email="MatthijsBurgh@outlook.com">Matthijs van der Burgh</author>
+
+  <maintainer email="MatthijsBurgh@outlook.com">Matthijs van der Burgh</maintainer>
+
+  <license>BSD</license>
+  <url>http://ros.org/wiki/geometric_shapes_py</url>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <build_depend>pybind11_vendor</build_depend>
+
+  <exec_depend>ament_index_python</exec_depend>
+
+  <depend>rclcpp</depend>
+  <depend>rclpy</depend>
+  <depend>geometry_msgs</depend>
+  <depend>octomap_msgs</depend>
+  <depend>geometric_shapes</depend>
+
+  <test_depend>ament_cmake_pytest</test_depend>
+  <test_depend>python3-pytest</test_depend>
+
+  <!--
+  <test_depend>ament_cmake_gtest</test_depend>
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_cmake</test_depend>
+  <test_depend>ament_cmake_copyright</test_depend>
+  -->
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
