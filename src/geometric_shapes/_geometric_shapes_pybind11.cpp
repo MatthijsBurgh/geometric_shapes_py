@@ -1,6 +1,8 @@
 #include <pybind11/pybind11.h>
 
-#include "aabb.hpp"
+//#include "aabb.hpp"
+
+#include "shapes.hpp"
 
 //#include <rcl/domain_id.h>
 //#include <rcl/service_introspection.h>
@@ -48,7 +50,9 @@ PYBIND11_MODULE(_geometric_shapes_pybind11, m)
 {
   m.doc() = "Python bindings for geometric_shapes.";
 
-  geometric_shapes_py::define_aabb(m);
+  geometric_shapes_py::define_shapes(m);
+
+  //  geometric_shapes_py::define_aabb(m);
 
   //  rclpy::define_destroyable(m);
   //

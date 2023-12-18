@@ -62,7 +62,9 @@ endfunction()
 
 pybind11_add_module(_geometric_shapes_pybind11 SHARED
   src/geometric_shapes/_geometric_shapes_pybind11.cpp
-  src/geometric_shapes/aabb.cpp
+#  src/geometric_shapes/aabb.cpp
+#  src/geometric_shapes/shape_operations.cpp
+  src/geometric_shapes/shapes.cpp
 )
 if(CMAKE_C_COMPILER_ID MATCHES "Clang" AND NOT APPLE)
   target_link_libraries(_geometric_shapes_pybind11 PRIVATE atomic)
@@ -71,6 +73,7 @@ endif()
 target_include_directories(_geometric_shapes_pybind11 PRIVATE
   src/geometric_shapes/
 )
+
 target_link_libraries(_geometric_shapes_pybind11 PRIVATE
   geometric_shapes::geometric_shapes
 )
