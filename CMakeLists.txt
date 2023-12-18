@@ -48,13 +48,14 @@ ament_python_install_package(geometric_shapes)
 
 # Set the build location and install location for a CPython extension
 function(configure_build_install_location _library_name)
-    # Install into test_moveit folder in build space for unit tests to import
-    set_target_properties(${_library_name} PROPERTIES
-        # Use generator expression to avoid prepending a build type specific directory on Windows
-        LIBRARY_OUTPUT_DIRECTORY $<1:${CMAKE_CURRENT_BINARY_DIR}/test_geometric_shapes>
-        RUNTIME_OUTPUT_DIRECTORY $<1:${CMAKE_CURRENT_BINARY_DIR}/test_geometric_shapes>)
+  # Install into test_moveit test_geometric_shapes in build space for unit tests to import
+  set_target_properties(${_library_name} PROPERTIES
+    # Use generator expression to avoid prepending a build type specific directory on Windows
+    LIBRARY_OUTPUT_DIRECTORY $<1:${CMAKE_CURRENT_BINARY_DIR}/test_geometric_shapes>
+    RUNTIME_OUTPUT_DIRECTORY $<1:${CMAKE_CURRENT_BINARY_DIR}/test_geometric_shapes>
+  )
 
-    install(TARGETS ${_library_name}
+  install(TARGETS ${_library_name}
     DESTINATION "${PYTHON_INSTALL_DIR}/geometric_shapes"
   )
 endfunction()
