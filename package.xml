@@ -14,15 +14,13 @@
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
+  <depend>rclcpp</depend>
+  <depend>geometric_shapes</depend>
+
   <build_depend>pybind11_vendor</build_depend>
 
   <exec_depend>ament_index_python</exec_depend>
-
-  <depend>rclcpp</depend>
-  <depend>rclpy</depend>
-  <depend>geometry_msgs</depend>
-  <depend>octomap_msgs</depend>
-  <depend>geometric_shapes</depend>
+  <exec_depend>rclpy</exec_depend>
 
   <test_depend>ament_cmake_pytest</test_depend>
   <test_depend>python3-pytest</test_depend>

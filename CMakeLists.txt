@@ -34,6 +34,7 @@ endif()
 
 find_package(ament_cmake REQUIRED)
 find_package(geometric_shapes REQUIRED)
+find_package(rclcpp REQUIRED)
 
 # Find python before pybind11
 find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
@@ -63,7 +64,8 @@ endfunction()
 pybind11_add_module(_geometric_shapes_pybind11 SHARED
   src/geometric_shapes/_geometric_shapes_pybind11.cpp
 #  src/geometric_shapes/aabb.cpp
-#  src/geometric_shapes/shape_operations.cpp
+  src/geometric_shapes/ros_msg_typecasters.cpp
+  src/geometric_shapes/shape_operations.cpp
   src/geometric_shapes/shapes.cpp
 )
 if(CMAKE_C_COMPILER_ID MATCHES "Clang" AND NOT APPLE)
@@ -76,6 +78,7 @@ target_include_directories(_geometric_shapes_pybind11 PRIVATE
 
 target_link_libraries(_geometric_shapes_pybind11 PRIVATE
   geometric_shapes::geometric_shapes
+  rclcpp::rclcpp
 )
 configure_build_install_location(_geometric_shapes_pybind11)
 

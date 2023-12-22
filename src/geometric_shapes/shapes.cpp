@@ -13,12 +13,14 @@
 // limitations under the License.
 
 #include <pybind11/pybind11.h>
+#include <pybind11/numpy.h>
 
 #include <geometric_shapes/shapes.h>
 
 #include "shapes.hpp"
 
 #include <sstream>
+#include <string>
 
 namespace geometric_shapes_py
 {
@@ -82,6 +84,7 @@ void define_shapes(py::module& m)
            })
       .def("scale", &Shape::scale)
       .def("padd", &Shape::padd)
+      .def("scale_and_padd", &Shape::scaleAndPadd)
       .def_property_readonly("is_fixed", &Shape::isFixed)
       .def_readonly("shape_type", &Shape::type);
 
@@ -121,7 +124,39 @@ void define_shapes(py::module& m)
       .def("scale_and_padd", (void(Box::*)(double, double, double, double, double, double)) & Box::scaleAndPadd,
            py::arg("scale_x"), py::arg("scale_y"), py::arg("scale_z"), py::arg("padd_x"), py::arg("padd_y"),
            py::arg("padd_z"))
-      .def_readwrite("size", &Box::size);
+      .def_property(
+          "size", [](const Box& b) { return py::make_tuple(b.size[0], b.size[1], b.size[2]); },
+          [](Box& b, const py::array_t<double>& size) {
+            if (size.size() != 3)
+              throw std::length_error("Size should be of length 3, not " + std::to_string(size.size()));
+
+            b.size[0] = size.at(0);
+            b.size[1] = size.at(1);
+            b.size[2] = size.at(2);
+          });
+
+  py::class_<Mesh, Shape, PyInheritedShape<Mesh>>(m, "Mesh")
+      .def(py::init<>())
+      .def(py::init<uint, uint>(), py::arg("vertex_count"), py::arg("triangle_count"))
+      .def("scale", (void(Mesh::*)(double, double, double)) & Mesh::scale, py::arg("scale_x"), py::arg("scale_y"),
+           py::arg("scale_z"))
+      .def("padd", (void(Mesh::*)(double, double, double)) & Mesh::padd, py::arg("padd_x"), py::arg("padd_y"),
+           py::arg("padd_z"))
+      .def("scale_and_padd", (void(Mesh::*)(double, double, double, double, double, double)) & Mesh::scaleAndPadd,
+           py::arg("scale_x"), py::arg("scale_y"), py::arg("scale_z"), py::arg("padd_x"), py::arg("padd_y"),
+           py::arg("padd_z"))
+      .def_readonly("vertex_count", &Mesh::vertex_count)
+      .def_readonly("triangle_count", &Mesh::triangle_count);
+
+  py::class_<Plane, Shape, PyInheritedShape<Plane>>(m, "Plane")
+      .def(py::init<>())
+      .def(py::init<double, double, double, double>(), py::arg("pa"), py::arg("pb"), py::arg("pc"), py::arg("pd"))
+      .def_readwrite("a", &Plane::a)
+      .def_readwrite("b", &Plane::b)
+      .def_readwrite("c", &Plane::c)
+      .def_readwrite("d", &Plane::d);
+
+  py::class_<OcTree, Shape, PyInheritedShape<OcTree>>(m, "OcTree").def(py::init<>());
 }
 
 }  // namespace geometric_shapes_py
