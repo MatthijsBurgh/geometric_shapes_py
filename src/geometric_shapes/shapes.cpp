@@ -66,8 +66,8 @@ void define_shapes(py::module& m)
       .value("box", ShapeType::BOX)
       .value("plane", ShapeType::PLANE)
       .value("mesh", ShapeType::MESH)
-      .value("octree", ShapeType::OCTREE)
-      .export_values();
+      .value("octree", ShapeType::OCTREE);
+  //    .export_values(); // Not desired to have the values available in the module
 
   py::class_<Shape, PyShape<>>(m, "Shape", R"(
     A basic definition of a shape. Shapes are considered centered at origin
