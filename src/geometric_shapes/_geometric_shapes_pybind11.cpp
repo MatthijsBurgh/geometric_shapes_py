@@ -1,7 +1,7 @@
 #include <pybind11/pybind11.h>
 
 //#include "aabb.hpp"
-
+#include "mesh_operations.hpp"
 #include "shape_operations.hpp"
 #include "shapes.hpp"
 
@@ -51,11 +51,13 @@ PYBIND11_MODULE(_geometric_shapes_pybind11, m)
 {
   m.doc() = "Python bindings for geometric_shapes.";
 
+  //  geometric_shapes_py::define_aabb(m);
+
+  geometric_shapes_py::define_mesh_operations(m);
+
   geometric_shapes_py::define_shapes(m);
 
   geometric_shapes_py::define_shape_operations(m);
-
-  //  geometric_shapes_py::define_aabb(m);
 
   //  rclpy::define_destroyable(m);
   //
