@@ -22,12 +22,19 @@
 namespace geometric_shapes_py
 {
 
-void define_aabb(py::object& m)
+using namespace bodies;
+
+void define_aabb(py::module& m)
 {
-  py::class_<bodies::AABB>(m, "AABB", R"(
+  py::class_<AABB>(m, "AABB", R"(
       Represents an axis-aligned bounding box.
       )")
-      .def("extend_with_transformed_box", &bodies::AABB::extendWithTransformedBox);
+      .def(py::init<>())
+      .def("center", &AABB::center)
+      .def("extend_with_transformed_box", &AABB::extendWithTransformedBox, py::arg("transform"), py::arg("box"))
+      .def_property_readonly("is_empty", &AABB::isEmpty)
+      .def("set_empty", &AABB::setEmpty)
+      .def("sizes", &AABB::sizes);
 }
 
 }  // namespace geometric_shapes_py
