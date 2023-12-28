@@ -98,10 +98,10 @@ Shapes are considered centered at origin.)")
 Length is along z axis.  Origin is at center of mass.)")
       .def(py::init<>())
       .def(py::init<double, double>(), py::arg("r"), py::arg("l"))
-      .def("scale", (void(Cylinder::*)(double, double)) & Cylinder::scale, py::arg("scale_radius"),
+      .def("scale", py::overload_cast<double, double>(&Cylinder::scale), py::arg("scale_radius"),
            py::arg("scale_length"))
-      .def("padd", (void(Cylinder::*)(double, double)) & Cylinder::padd, py::arg("padd_radius"), py::arg("padd_length"))
-      .def("scale_and_padd", (void(Cylinder::*)(double, double, double, double)) & Cylinder::scaleAndPadd,
+      .def("padd", py::overload_cast<double, double>(&Cylinder::padd), py::arg("padd_radius"), py::arg("padd_length"))
+      .def("scale_and_padd", py::overload_cast<double, double, double, double>(&Cylinder::scaleAndPadd),
            py::arg("scale_radius"), py::arg("scale_length"), py::arg("padd_radius"), py::arg("padd_length"))
       .def_readwrite("length", &Cylinder::length)
       .def_readwrite("radius", &Cylinder::radius);
@@ -111,9 +111,9 @@ Length is along z axis.  Origin is at center of mass.)")
 Tip is on positive z-axis.  Center of base is on negative z-axis. Origin is halfway between tip and center of base.)")
       .def(py::init<>())
       .def(py::init<double, double>(), py::arg("r"), py::arg("l"))
-      .def("scale", (void(Cone::*)(double, double)) & Cone::scale, py::arg("scale_radius"), py::arg("scale_length"))
-      .def("padd", (void(Cone::*)(double, double)) & Cone::padd, py::arg("padd_radius"), py::arg("padd_length"))
-      .def("scale_and_padd", (void(Cone::*)(double, double, double, double)) & Cone::scaleAndPadd,
+      .def("scale", py::overload_cast<double, double>(&Cone::scale), py::arg("scale_radius"), py::arg("scale_length"))
+      .def("padd", py::overload_cast<double, double>(&Cone::padd), py::arg("padd_radius"), py::arg("padd_length"))
+      .def("scale_and_padd", py::overload_cast<double, double, double, double>(&Cone::scaleAndPadd),
            py::arg("scale_radius"), py::arg("scale_length"), py::arg("padd_radius"), py::arg("padd_length"))
       .def_readwrite("length", &Cone::length)
       .def_readwrite("radius", &Cone::radius);
@@ -123,11 +123,11 @@ Tip is on positive z-axis.  Center of base is on negative z-axis. Origin is half
 Aligned with the xyz-axes.)")
       .def(py::init<>())
       .def(py::init<double, double, double>(), py::arg("x"), py::arg("y"), py::arg("z"))
-      .def("scale", (void(Box::*)(double, double, double)) & Box::scale, py::arg("scale_x"), py::arg("scale_y"),
+      .def("scale", py::overload_cast<double, double, double>(&Box::scale), py::arg("scale_x"), py::arg("scale_y"),
            py::arg("scale_z"))
-      .def("padd", (void(Box::*)(double, double, double)) & Box::padd, py::arg("padd_x"), py::arg("padd_y"),
+      .def("padd", py::overload_cast<double, double, double>(&Box::padd), py::arg("padd_x"), py::arg("padd_y"),
            py::arg("padd_z"))
-      .def("scale_and_padd", (void(Box::*)(double, double, double, double, double, double)) & Box::scaleAndPadd,
+      .def("scale_and_padd", py::overload_cast<double, double, double, double, double, double>(&Box::scaleAndPadd),
            py::arg("scale_x"), py::arg("scale_y"), py::arg("scale_z"), py::arg("padd_x"), py::arg("padd_y"),
            py::arg("padd_z"))
       .def_property(
@@ -149,11 +149,11 @@ Padding is not applied to vertices plainly coordinate-wise, but instead the padd
 the direction vector between centroid and each vertex.)")
       .def(py::init<>())
       .def(py::init<uint, uint>(), py::arg("vertex_count"), py::arg("triangle_count"))
-      .def("scale", (void(Mesh::*)(double, double, double)) & Mesh::scale, py::arg("scale_x"), py::arg("scale_y"),
+      .def("scale", py::overload_cast<double, double, double>(&Mesh::scale), py::arg("scale_x"), py::arg("scale_y"),
            py::arg("scale_z"))
-      .def("padd", (void(Mesh::*)(double, double, double)) & Mesh::padd, py::arg("padd_x"), py::arg("padd_y"),
+      .def("padd", py::overload_cast<double, double, double>(&Mesh::padd), py::arg("padd_x"), py::arg("padd_y"),
            py::arg("padd_z"))
-      .def("scale_and_padd", (void(Mesh::*)(double, double, double, double, double, double)) & Mesh::scaleAndPadd,
+      .def("scale_and_padd", py::overload_cast<double, double, double, double, double, double>(&Mesh::scaleAndPadd),
            py::arg("scale_x"), py::arg("scale_y"), py::arg("scale_z"), py::arg("padd_x"), py::arg("padd_y"),
            py::arg("padd_z"))
       .def_readonly("vertex_count", &Mesh::vertex_count)
