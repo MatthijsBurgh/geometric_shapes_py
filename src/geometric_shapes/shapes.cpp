@@ -69,9 +69,9 @@ void define_shapes(py::module& m)
       .value("octree", ShapeType::OCTREE);
   //    .export_values(); // Not desired to have the values available in the module
 
-  py::class_<Shape, PyShape<>>(m, "Shape", R"(
-    A basic definition of a shape. Shapes are considered centered at origin
-    )")
+  py::class_<Shape, PyShape<>>(m, "Shape", R"(A basic definition of a shape.
+
+Shapes are considered centered at origin.)")
       .def(py::init<>())
       .def("__copy__", &Shape::clone)
       .def(
@@ -88,12 +88,14 @@ void define_shapes(py::module& m)
       .def_property_readonly("is_fixed", &Shape::isFixed)
       .def_readonly("shape_type", &Shape::type);
 
-  py::class_<Sphere, Shape, PyInheritedShape<Sphere>>(m, "Sphere")
+  py::class_<Sphere, Shape, PyInheritedShape<Sphere>>(m, "Sphere", R"(Definition of a sphere.)")
       .def(py::init<>())
       .def(py::init<double>(), py::arg("r"))
       .def_readwrite("radius", &Sphere::radius);
 
-  py::class_<Cylinder, Shape, PyInheritedShape<Cylinder>>(m, "Cylinder")
+  py::class_<Cylinder, Shape, PyInheritedShape<Cylinder>>(m, "Cylinder", R"(Definition of a cylinder.
+
+Length is along z axis.  Origin is at center of mass.)")
       .def(py::init<>())
       .def(py::init<double, double>(), py::arg("r"), py::arg("l"))
       .def("scale", (void(Cylinder::*)(double, double)) & Cylinder::scale, py::arg("scale_radius"),
@@ -104,7 +106,9 @@ void define_shapes(py::module& m)
       .def_readwrite("length", &Cylinder::length)
       .def_readwrite("radius", &Cylinder::radius);
 
-  py::class_<Cone, Shape, PyInheritedShape<Cone>>(m, "Cone")
+  py::class_<Cone, Shape, PyInheritedShape<Cone>>(m, "Cone", R"(Definition of a cone
+
+Tip is on positive z-axis.  Center of base is on negative z-axis. Origin is halfway between tip and center of base.)")
       .def(py::init<>())
       .def(py::init<double, double>(), py::arg("r"), py::arg("l"))
       .def("scale", (void(Cone::*)(double, double)) & Cone::scale, py::arg("scale_radius"), py::arg("scale_length"))
@@ -114,7 +118,9 @@ void define_shapes(py::module& m)
       .def_readwrite("length", &Cone::length)
       .def_readwrite("radius", &Cone::radius);
 
-  py::class_<Box, Shape, PyInheritedShape<Box>>(m, "Box")
+  py::class_<Box, Shape, PyInheritedShape<Box>>(m, "Box", R"(Definition of a box
+
+Aligned with the xyz-axes.)")
       .def(py::init<>())
       .def(py::init<double, double, double>(), py::arg("x"), py::arg("y"), py::arg("z"))
       .def("scale", (void(Box::*)(double, double, double)) & Box::scale, py::arg("scale_x"), py::arg("scale_y"),
@@ -135,7 +141,12 @@ void define_shapes(py::module& m)
             b.size[2] = size.at(2);
           });
 
-  py::class_<Mesh, Shape, PyInheritedShape<Mesh>>(m, "Mesh")
+  py::class_<Mesh, Shape, PyInheritedShape<Mesh>>(m, "Mesh", R"(Definition of a triangle mesh.
+
+By convention the "center" of the shape is at the origin. For a mesh this implies that the AABB of the mesh is
+centered at the origin. Some methods may not work with arbitrary meshes whose AABB is not centered at the origin.
+Padding is not applied to vertices plainly coordinate-wise, but instead the padding value is added to the length of
+the direction vector between centroid and each vertex.)")
       .def(py::init<>())
       .def(py::init<uint, uint>(), py::arg("vertex_count"), py::arg("triangle_count"))
       .def("scale", (void(Mesh::*)(double, double, double)) & Mesh::scale, py::arg("scale_x"), py::arg("scale_y"),
@@ -148,7 +159,8 @@ void define_shapes(py::module& m)
       .def_readonly("vertex_count", &Mesh::vertex_count)
       .def_readonly("triangle_count", &Mesh::triangle_count);
 
-  py::class_<Plane, Shape, PyInheritedShape<Plane>>(m, "Plane")
+  py::class_<Plane, Shape, PyInheritedShape<Plane>>(m, "Plane",
+                                                    R"(Definition of a plane with equation ax + by + cz + d = 0.)")
       .def(py::init<>())
       .def(py::init<double, double, double, double>(), py::arg("pa"), py::arg("pb"), py::arg("pc"), py::arg("pd"))
       .def_readwrite("a", &Plane::a)
@@ -156,7 +168,8 @@ void define_shapes(py::module& m)
       .def_readwrite("c", &Plane::c)
       .def_readwrite("d", &Plane::d);
 
-  py::class_<OcTree, Shape, PyInheritedShape<OcTree>>(m, "OcTree").def(py::init<>());
+  py::class_<OcTree, Shape, PyInheritedShape<OcTree>>(m, "OcTree", R"(Representation of an octomap::OcTree as a Shape.)")
+      .def(py::init<>());
 }
 
 }  // namespace geometric_shapes_py
