@@ -13,8 +13,6 @@
 // limitations under the License.
 
 #include <pybind11/pybind11.h>
-#include <pybind11/iostream.h>
-#include <pybind11/stl.h>
 
 #include <geometric_shapes/shape_operations.h>
 
@@ -52,7 +50,7 @@ void define_shape_operations(py::module& m)
         }
         return shape;
       },
-      py::arg("shape_msg"));
+      py::arg("msg"), R"(Construct the shape that corresponds to the message.)");
 
   m.def(
       "construct_msg_from_shape",
@@ -67,7 +65,7 @@ void define_shape_operations(py::module& m)
         }
         return msg;
       },
-      py::arg("shape"));
+      py::arg("shape"), R"(Construct the message that corresponds to the shape.)");
 
   m.def(
       "construct_marker_from_shape",
@@ -82,11 +80,13 @@ void define_shape_operations(py::module& m)
         }
         return msg;
       },
-      py::arg("shape"), py::arg("use_mesh_triangle_list") = false);
+      py::arg("shape"), py::arg("use_mesh_triangle_list") = false,
+      R"(Construct the marker that corresponds to the shape.)");
 
-  m.def("shape_string_name", &shapeStringName);
+  m.def("shape_string_name", &shapeStringName, py::arg("shape"), R"(Get the string name of the shape.)");
 
-  m.def("shape_to_text", &saveAsText, py::arg("shape"), py::arg("binary_stream"));
+  m.def("shape_to_text", &saveAsText, py::arg("shape"), py::arg("binary_stream"),
+        R"(Write all the information about this shape to a binary stream.)");
 
   m.def(
       "text_to_shape",
@@ -97,7 +97,7 @@ void define_shape_operations(py::module& m)
 
         return shape;
       },
-      py::arg("binary_stream"));
+      py::arg("binary_stream"), R"(Construct a shape from a binary text stream.)");
 }
 
 }  // namespace geometric_shapes_py
