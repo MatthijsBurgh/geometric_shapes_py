@@ -3,6 +3,7 @@
 //#include "aabb.hpp"
 #include "mesh_operations.hpp"
 #include "shape_operations.hpp"
+#include "shape_to_marker.hpp"
 #include "shapes.hpp"
 
 //#include <rcl/domain_id.h>
@@ -58,6 +59,8 @@ PYBIND11_MODULE(_geometric_shapes_pybind11, m)
   geometric_shapes_py::define_shapes(m);
 
   geometric_shapes_py::define_shape_operations(m);
+
+  geometric_shapes_py::define_shape_to_marker(m);
 
   //  rclpy::define_destroyable(m);
   //
