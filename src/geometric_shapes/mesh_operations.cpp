@@ -35,11 +35,9 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/iostream.h>
 #include <pybind11/eigen.h>
-//#include <pybind11/stl.h>
 
 #include <geometric_shapes/mesh_operations.h>
 
-#include <container_typecasters.hpp>
 #include <pystreambuf.hpp>
 #include <ros_msg_typecasters.hpp>
 #include "mesh_operations.hpp"

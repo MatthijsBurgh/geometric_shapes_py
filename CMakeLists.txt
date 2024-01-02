@@ -64,8 +64,10 @@ endfunction()
 pybind11_add_module(_geometric_shapes_py SHARED
   src/geometric_shapes/_geometric_shapes_py.cpp
 #  src/geometric_shapes/aabb.cpp
+  src/geometric_shapes/mesh_operations.cpp
   src/geometric_shapes/ros_msg_typecasters.cpp
   src/geometric_shapes/shape_operations.cpp
+  src/geometric_shapes/shape_to_marker.cpp
   src/geometric_shapes/shapes.cpp
 )
 if(CMAKE_C_COMPILER_ID MATCHES "Clang" AND NOT APPLE)
