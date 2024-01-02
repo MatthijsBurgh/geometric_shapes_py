@@ -87,155 +87,32 @@ if(NOT WIN32)
   )
 endif()
 
+if(BUILD_TESTING)
+  # ament_lint
+  set(ament_cmake_clang_format_CONFIG_FILE ".clang-format")
+#  set(ament_cmake_clang_tidy_CONFIG_FILE ".clang-tidy")
+  find_package(ament_lint_auto REQUIRED)
+  ament_lint_auto_find_test_dependencies()
 
-# Set VERSION from package.xml
-ament_package_xml()
+  # pytest
+  find_package(ament_cmake_pytest REQUIRED)
+
+  file(GLOB _geometric_shapes_py_pytest_tests RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+      "test/test*.py"
+  )
+
+  message(DEBUG "Detected pytest files: ${_geometric_shapes_py_pytest_tests}")
+
+  foreach(_test_path ${_geometric_shapes_py_pytest_tests})
+    get_filename_component(_test_name ${_test_path} NAME_WE)
+    ament_add_pytest_test(${_test_name} ${_test_path}
+      APPEND_ENV
+        AMENT_PREFIX_PATH=${ament_index_build_path}
+        PYTHONPATH=${CMAKE_CURRENT_BINARY_DIR}
+      TIMEOUT 120
+      WERROR ON
+    )
+  endforeach()
+endif()
+
 ament_package()
-
-# target_link_libraries(_geometric_shapes_pybind11 PRIVATE moveit_ros_planning::moveit_cpp
-				   # rclcpp::rclcpp
-				   # moveit_core::moveit_transforms
-				   # moveit_core::moveit_kinematic_constraints
-				   # moveit_core::moveit_planning_interface
-				   # moveit_core::moveit_planning_scene
-				   # moveit_core::moveit_utils
-				   # moveit_core::moveit_robot_model
-				   # moveit_core::moveit_robot_state
-				   # moveit_py_utils)
-# configure_build_install_location(core)
-#
-# pybind11_add_module(planning
-    # src/moveit/planning.cpp
-    # src/moveit/moveit_ros/moveit_cpp/moveit_cpp.cpp
-    # src/moveit/moveit_ros/moveit_cpp/planning_component.cpp
-    # src/moveit/moveit_ros/planning_scene_monitor/planning_scene_monitor.cpp
-    # src/moveit/moveit_ros/trajectory_execution_manager/trajectory_execution_manager.cpp
-# )
-# target_link_libraries(planning PRIVATE moveit_ros_planning::moveit_cpp
-    # moveit_ros_planning::moveit_planning_scene_monitor
-    # moveit_ros_planning::moveit_trajectory_execution_manager
-    # moveit_core::moveit_utils
-    # rclcpp::rclcpp
-    # moveit_py_utils
-# )
-# configure_build_install_location(planning)
-#
-#
-# if(BUILD_TESTING)
-  # find_package(ament_cmake_pytest REQUIRED)
-  # set(_pytest_tests
-    # test/unit/test_robot_model.py
-    # test/unit/test_robot_state.py
-  # )
-  # foreach(_test_path ${_pytest_tests})
-	  # get_filename_component(_test_name ${_test_path} NAME_WE)
-	  # ament_add_pytest_test(${_test_name} ${_test_path}
-	  # APPEND_ENV AMENT_PREFIX_INDEX=${ament_index_build_path} PYTHONPATH=${CMAKE_CURRENT_BINARY_DIR}
-	  # TIMEOUT 60
-	  # WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
-   	  # )
-  # endforeach()
-# endif()
-#
-# ament_export_targets(moveit_py_utilsTargets HAS_LIBRARY_TARGET)
-# ament_export_dependencies(moveit_ros_planning_interface)
-# ament_package()
-
-
-# if(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
-  # message("${PROJECT_NAME}: You did not request a specific build type: Choosing 'Release' for maximum performance")
-  # set(CMAKE_BUILD_TYPE Release)
-# endif()
-#
-#
-# # find *absolute* paths to ASSIMP_LIBRARIES
-# # Both, pkg-config and assimp's cmake-config don't provide an absolute library path.
-# # For, pkg-config the path is in ASSIMP_PC_LIBRARY_DIRS, for cmake in ASSIMP_LIBRARY_DIRS.
-# find_library(assimp_ABS_LIBRARIES NAMES ${assimp_LIBRARIES} assimp HINTS ${assimp_LIBRARY_DIRS} ${assimp_PC_LIBRARY_DIRS})
-# set(assimp_LIBRARIES "${assimp_ABS_LIBRARIES}")
-#
-# # These need to be in this order to find header files
-# find_package(eigen3_cmake_module REQUIRED)
-# find_package(Eigen3 REQUIRED)
-#
-# find_package(ament_cmake REQUIRED)
-# find_package(assimp REQUIRED)
-# find_package(console_bridge REQUIRED)
-# find_package(console_bridge_vendor REQUIRED)
-# find_package(eigen_stl_containers REQUIRED)
-# find_package(geometry_msgs REQUIRED)
-# find_package(OCTOMAP REQUIRED)
-# find_package(QHULL REQUIRED)
-# find_package(random_numbers REQUIRED)
-# find_package(rclcpp REQUIRED)
-# find_package(resource_retriever REQUIRED)
-# find_package(shape_msgs REQUIRED)
-# find_package(visualization_msgs REQUIRED)
-# include(ConfigExtras)
-#
-# set(THIS_PACKAGE_EXPORT_DEPENDS
-  # eigen3_cmake_module
-  # Eigen3
-  # Boost
-  # console_bridge
-  # console_bridge_vendor
-  # eigen_stl_containers
-  # geometry_msgs
-  # OCTOMAP
-  # random_numbers
-  # rclcpp
-  # resource_retriever
-  # shape_msgs
-  # visualization_msgs
-# )
-#
-# # Set VERSION from package.xml
-# ament_package_xml()
-#
-# include_directories(include)
-#
-# add_library(${PROJECT_NAME} SHARED
-  # src/aabb.cpp
-  # src/bodies.cpp
-  # src/body_operations.cpp
-  # src/mesh_operations.cpp
-  # src/shape_extents.cpp
-  # src/shape_operations.cpp
-  # src/shape_to_marker.cpp
-  # src/shapes.cpp
-# )
-# set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${${PROJECT_NAME}_VERSION} WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
-# target_compile_options(${PROJECT_NAME} PRIVATE ${PROJECT_COMPILE_OPTIONS})
-# ament_target_dependencies(${PROJECT_NAME}
-  # ${THIS_PACKAGE_EXPORT_DEPENDS}
-# )
-# ament_target_dependencies(${PROJECT_NAME} SYSTEM
-  # # We don't export these dependencies because their cmake is broken
-  # assimp
-  # QHULL
-# )
-#
-# if(BUILD_TESTING)
-  # find_package(ament_cmake_gtest REQUIRED)
-  # # Unit tests
-  # add_subdirectory(test)
-#
-  # # ament_lint
-  # find_package(ament_lint_auto REQUIRED)
-  # ament_lint_auto_find_test_dependencies()
-# endif()
-#
-# install(
-  # TARGETS ${PROJECT_NAME}
-  # EXPORT export_${PROJECT_NAME}
-  # LIBRARY DESTINATION lib
-  # ARCHIVE DESTINATION lib
-  # RUNTIME DESTINATION bin
-  # INCLUDES DESTINATION include
-# )
-# install(DIRECTORY include/ DESTINATION include)
-#
-# ament_export_targets(export_${PROJECT_NAME} HAS_LIBRARY_TARGET)
-# ament_export_dependencies(${THIS_PACKAGE_EXPORT_DEPENDS})
-#
-# ament_package(CONFIG_EXTRAS "cmake/ConfigExtras.cmake")
