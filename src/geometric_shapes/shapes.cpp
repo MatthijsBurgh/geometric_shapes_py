@@ -102,54 +102,76 @@ Shapes are considered centered at origin.)")
              s.print(oss);
              return oss.str();
            })
-      .def("scale", &Shape::scale)
-      .def("padd", &Shape::padd)
-      .def("scale_and_padd", &Shape::scaleAndPadd)
-      .def_property_readonly("is_fixed", &Shape::isFixed)
-      .def_readonly("shape_type", &Shape::type);
+      .def("scale", &Shape::scale, py::arg("scale"), R"(Uniformly scale this shape by a factor.)")
+      .def("padd", &Shape::padd, py::arg("padd"), R"(Add uniform padding to this shape.)")
+      .def("scale_and_padd", &Shape::scaleAndPadd, py::arg("scale"), py::arg("padd"),
+           R"(Uniformly scale and padd this shape.)")
+      .def_property_readonly("is_fixed", &Shape::isFixed,
+                             R"(Return a flag indicating whether this shape can be scaled and/or padded.)")
+      .def_readonly("shape_type", &Shape::type, R"(The type of the shape)");
 
   py::class_<Sphere, Shape, PyInheritedShape<Sphere>>(m, "Sphere", R"(Definition of a sphere.)")
       .def(py::init<>())
       .def(py::init<double>(), py::arg("r"))
-      .def_readwrite("radius", &Sphere::radius);
+      .def_readwrite("radius", &Sphere::radius, R"(The radius of the sphere.)");
 
   py::class_<Cylinder, Shape, PyInheritedShape<Cylinder>>(m, "Cylinder", R"(Definition of a cylinder.
 
 Length is along z axis.  Origin is at center of mass.)")
       .def(py::init<>())
       .def(py::init<double, double>(), py::arg("r"), py::arg("l"))
+      .def("scale", py::overload_cast<double>(&Shape::scale), py::arg("scale"),
+           R"(Uniformly scale this shape by a factor.)")
       .def("scale", py::overload_cast<double, double>(&Cylinder::scale), py::arg("scale_radius"),
-           py::arg("scale_length"))
-      .def("padd", py::overload_cast<double, double>(&Cylinder::padd), py::arg("padd_radius"), py::arg("padd_length"))
+           py::arg("scale_length"), R"(Scale this cylinder by a non-uniform factor.)")
+      .def("padd", py::overload_cast<double>(&Shape::padd), py::arg("padd"), R"(Add uniform padding to this shape.)")
+      .def("padd", py::overload_cast<double, double>(&Cylinder::padd), py::arg("padd_radius"), py::arg("padd_length"),
+           R"(Add non-uniform padding to this cylinder.)")
+      .def("scale_and_padd", py::overload_cast<double, double>(&Shape::scaleAndPadd), py::arg("scale"), py::arg("padd"),
+           R"(Uniformly scale and padd this shape.)")
       .def("scale_and_padd", py::overload_cast<double, double, double, double>(&Cylinder::scaleAndPadd),
-           py::arg("scale_radius"), py::arg("scale_length"), py::arg("padd_radius"), py::arg("padd_length"))
-      .def_readwrite("length", &Cylinder::length)
-      .def_readwrite("radius", &Cylinder::radius);
+           py::arg("scale_radius"), py::arg("scale_length"), py::arg("padd_radius"), py::arg("padd_length"),
+           R"(Scale this cylinder by a non-uniform factor and then add non-uniform padding.)")
+      .def_readwrite("length", &Cylinder::length, R"(The length of the cylinder.)")
+      .def_readwrite("radius", &Cylinder::radius, R"(The radius of the cylinder.)");
 
   py::class_<Cone, Shape, PyInheritedShape<Cone>>(m, "Cone", R"(Definition of a cone
 
 Tip is on positive z-axis.  Center of base is on negative z-axis. Origin is halfway between tip and center of base.)")
       .def(py::init<>())
       .def(py::init<double, double>(), py::arg("r"), py::arg("l"))
-      .def("scale", py::overload_cast<double, double>(&Cone::scale), py::arg("scale_radius"), py::arg("scale_length"))
-      .def("padd", py::overload_cast<double, double>(&Cone::padd), py::arg("padd_radius"), py::arg("padd_length"))
+      .def("scale", py::overload_cast<double>(&Shape::scale), py::arg("scale"),
+           R"(Uniformly scale this shape by a factor.)")
+      .def("scale", py::overload_cast<double, double>(&Cone::scale), py::arg("scale_radius"), py::arg("scale_length"),
+           R"(Scale this cone by a non-uniform factor.)")
+      .def("padd", py::overload_cast<double>(&Shape::padd), py::arg("padd"), R"(Add uniform padding to this shape.)")
+      .def("padd", py::overload_cast<double, double>(&Cone::padd), py::arg("padd_radius"), py::arg("padd_length"),
+           R"(Add non-uniform padding to this cone.)")
+      .def("scale_and_padd", py::overload_cast<double, double>(&Shape::scaleAndPadd), py::arg("scale"), py::arg("padd"),
+           R"(Uniformly scale and padd this shape.)")
       .def("scale_and_padd", py::overload_cast<double, double, double, double>(&Cone::scaleAndPadd),
-           py::arg("scale_radius"), py::arg("scale_length"), py::arg("padd_radius"), py::arg("padd_length"))
-      .def_readwrite("length", &Cone::length)
-      .def_readwrite("radius", &Cone::radius);
+           py::arg("scale_radius"), py::arg("scale_length"), py::arg("padd_radius"), py::arg("padd_length"),
+           R"(Scale this cone by a non-uniform factor and then add non-uniform padding.)")
+      .def_readwrite("length", &Cone::length, R"(The length of the cone.)")
+      .def_readwrite("radius", &Cone::radius, R"(The radius of the cone.)");
 
   py::class_<Box, Shape, PyInheritedShape<Box>>(m, "Box", R"(Definition of a box
 
 Aligned with the xyz-axes.)")
       .def(py::init<>())
       .def(py::init<double, double, double>(), py::arg("x"), py::arg("y"), py::arg("z"))
+      .def("scale", py::overload_cast<double>(&Shape::scale), py::arg("scale"),
+           R"(Uniformly scale this shape by a factor.)")
       .def("scale", py::overload_cast<double, double, double>(&Box::scale), py::arg("scale_x"), py::arg("scale_y"),
-           py::arg("scale_z"))
+           py::arg("scale_z"), R"(Scale this box by a non-uniform factor.)")
+      .def("padd", py::overload_cast<double>(&Shape::padd), py::arg("padd"), R"(Add uniform padding to this shape.)")
       .def("padd", py::overload_cast<double, double, double>(&Box::padd), py::arg("padd_x"), py::arg("padd_y"),
-           py::arg("padd_z"))
+           py::arg("padd_z"), R"(Add non-uniform padding to this box.)")
+      .def("scale_and_padd", py::overload_cast<double, double>(&Shape::scaleAndPadd), py::arg("scale"), py::arg("padd"),
+           R"(Uniformly scale and padd this shape.)")
       .def("scale_and_padd", py::overload_cast<double, double, double, double, double, double>(&Box::scaleAndPadd),
            py::arg("scale_x"), py::arg("scale_y"), py::arg("scale_z"), py::arg("padd_x"), py::arg("padd_y"),
-           py::arg("padd_z"))
+           py::arg("padd_z"), R"(Scale this box by a non-uniform factor and then add non-uniform padding.)")
       .def_property(
           "size", [](const Box& b) { return py::make_tuple(b.size[0], b.size[1], b.size[2]); },
           [](Box& b, const py::array_t<double>& size) {
@@ -169,10 +191,15 @@ Padding is not applied to vertices plainly coordinate-wise, but instead the padd
 the direction vector between centroid and each vertex.)")
       .def(py::init<>())
       .def(py::init<uint, uint>(), py::arg("vertex_count"), py::arg("triangle_count"))
+      .def("scale", py::overload_cast<double>(&Shape::scale), py::arg("scale"),
+           R"(Uniformly scale this shape by a factor.)")
       .def("scale", py::overload_cast<double, double, double>(&Mesh::scale), py::arg("scale_x"), py::arg("scale_y"),
            py::arg("scale_z"))
+      .def("padd", py::overload_cast<double>(&Shape::padd), py::arg("padd"), R"(Add uniform padding to this shape.)")
       .def("padd", py::overload_cast<double, double, double>(&Mesh::padd), py::arg("padd_x"), py::arg("padd_y"),
            py::arg("padd_z"))
+      .def("scale_and_padd", py::overload_cast<double, double>(&Shape::scaleAndPadd), py::arg("scale"), py::arg("padd"),
+           R"(Uniformly scale and padd this shape.)")
       .def("scale_and_padd", py::overload_cast<double, double, double, double, double, double>(&Mesh::scaleAndPadd),
            py::arg("scale_x"), py::arg("scale_y"), py::arg("scale_z"), py::arg("padd_x"), py::arg("padd_y"),
            py::arg("padd_z"))
