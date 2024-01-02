@@ -181,7 +181,17 @@ Aligned with the xyz-axes.)")
             b.size[0] = size.at(0);
             b.size[1] = size.at(1);
             b.size[2] = size.at(2);
-          });
+          },
+          R"(x, y, z dimensions of the box (axis-aligned).)")
+      .def_property(
+          "x", [](const Box& b) { return b.size[0]; }, [](Box& b, double x) { b.size[0] = x; },
+          R"(x dimension of the box (axis-aligned).)")
+      .def_property(
+          "y", [](const Box& b) { return b.size[1]; }, [](Box& b, double y) { b.size[1] = y; },
+          R"(y dimension of the box (axis-aligned).)")
+      .def_property(
+          "z", [](const Box& b) { return b.size[2]; }, [](Box& b, double z) { b.size[2] = z; },
+          R"(z dimension of the box (axis-aligned).)");
 
   py::class_<Mesh, Shape, PyInheritedShape<Mesh>>(m, "Mesh", R"(Definition of a triangle mesh.
 
