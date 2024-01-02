@@ -48,7 +48,7 @@
 
 namespace py = pybind11;
 
-PYBIND11_MODULE(_geometric_shapes_pybind11, m)
+PYBIND11_MODULE(_geometric_shapes_py, m)
 {
   m.doc() = "Python bindings for geometric_shapes.";
 

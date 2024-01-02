@@ -61,26 +61,25 @@ function(configure_build_install_location _library_name)
   )
 endfunction()
 
-pybind11_add_module(_geometric_shapes_pybind11 SHARED
-  src/geometric_shapes/_geometric_shapes_pybind11.cpp
+pybind11_add_module(_geometric_shapes_py SHARED
+  src/geometric_shapes/_geometric_shapes_py.cpp
 #  src/geometric_shapes/aabb.cpp
   src/geometric_shapes/ros_msg_typecasters.cpp
   src/geometric_shapes/shape_operations.cpp
   src/geometric_shapes/shapes.cpp
 )
 if(CMAKE_C_COMPILER_ID MATCHES "Clang" AND NOT APPLE)
-  target_link_libraries(_geometric_shapes_pybind11 PRIVATE atomic)
+  target_link_libraries(_geometric_shapes_py PRIVATE atomic)
 endif()
-
-target_include_directories(_geometric_shapes_pybind11 PRIVATE
+target_include_directories(_geometric_shapes_py PRIVATE
   src/geometric_shapes/
 )
 
-target_link_libraries(_geometric_shapes_pybind11 PRIVATE
+target_link_libraries(_geometric_shapes_py PRIVATE
   geometric_shapes::geometric_shapes
   rclcpp::rclcpp
 )
-configure_build_install_location(_geometric_shapes_pybind11)
+configure_build_install_location(_geometric_shapes_py)
 
 if(NOT WIN32)
   ament_environment_hooks(
