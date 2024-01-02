@@ -53,21 +53,21 @@ using namespace shapes;
 
 void define_mesh_operations(py::module& m)
 {
-  m.def("create_mesh_from_resource",
-        py::overload_cast<const std::string&, const Eigen::Vector3d&>(&createMeshFromResource), py::arg("resource"),
-        py::arg("scale") = Eigen::Vector3d(1., 1., 1.),
-        R"(Load a mesh from a resource that contains a mesh that can be loaded by assimp.)");
+  m.def(
+      "create_mesh_from_resource",
+      py::overload_cast<const std::string&, const Eigen::Vector3d&>(&createMeshFromResource), py::arg("resource"),
+      py::arg("scale") = Eigen::Vector3d(1., 1., 1.),
+      R"(Load a mesh from a resource ('file://', 'http://', 'package://', ...) that contains a mesh that can be loaded by assimp.)");
 
   m.def(
       "create_mesh_from_binary",
-      [](std::istream& stream, const Eigen::Vector3d scale = { 1., 1., 1. },
-         const std::string& assimp_hint = std::string()) {
+      [](std::istream& stream, const Eigen::Vector3d& scale, const std::string& assimp_hint = std::string()) {
         size_t buffer_size = stream.gcount();
         char buffer[buffer_size];
         stream >> buffer;
         return createMeshFromBinary(buffer, buffer_size, scale, assimp_hint);
       },
-      py::arg("binary_stream"), py::arg("scale"), py::arg("assimp_hint"),
+      py::arg("binary_stream"), py::arg("scale") = Eigen::Vector3d(1., 1., 1.), py::arg("assimp_hint"),
       R"( Load a mesh from a binary stream that contains a mesh that can be loaded by assimp.)");
 
   m.def("create_mesh_from_shape", py::overload_cast<const Shape*>(&createMeshFromShape), py::arg("shape"),
