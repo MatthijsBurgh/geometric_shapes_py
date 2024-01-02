@@ -46,6 +46,15 @@ repos:
         language: system
         files: \.(c|cc|cxx|cpp|frag|glsl|h|hpp|hxx|ih|ispc|ipp|java|js|m|proto|vert)$
         args: ['-fallback-style=none', '-i']
+  #- repo: local
+    #hooks:
+      #- id: clang-tidy
+        #name: clang-tidy
+        #description: Lint files according to the ClangFormat.
+        #entry: clang-tidy-14
+        #language: system
+        #files: \.(c|cc|cxx|cpp|frag|glsl|h|hpp|hxx|ih|ispc|ipp|java|js|m|proto|vert)$
+        #args: []
   - repo: https://github.com/codespell-project/codespell
     rev: v2.2.6
     hooks:
