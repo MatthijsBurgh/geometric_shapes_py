@@ -77,7 +77,7 @@ jobs:
           name: test-results
           path: ${{ env.BASEDIR }}/target_ws/**/test_results/**/*.xml
       - name: upload codecov report
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         if: ${{ matrix.env.CCOV }}
         with:
           files: ${{ env.BASEDIR }}/coverage.info
