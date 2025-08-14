@@ -46,7 +46,7 @@ jobs:
     name: "${{ matrix.env.ROS_DISTRO }}-${{ matrix.env.ROS_REPO }}${{ matrix.env.CCOV && ' + ccov' || ''}}"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Cache upstream_ws
         id: cache-upstream_ws-restore
         uses: actions/cache/restore@v4
