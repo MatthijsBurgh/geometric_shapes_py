@@ -63,7 +63,7 @@ void define_mesh_operations(py::module& m)
   m.def(
       "create_mesh_from_binary",
       [](std::istream& stream, const Eigen::Vector3d& scale, const std::string& assimp_hint = std::string()) {
-        std::vector<char> buffer(std::istreambuf_iterator<char>(stream), std::istreambuf_iterator<char>());
+        std::vector<char> buffer{ std::istreambuf_iterator<char>(stream), std::istreambuf_iterator<char>() };
         return createMeshFromBinary(buffer.data(), buffer.size(), scale, assimp_hint);
       },
       py::arg("binary_stream"), py::arg("scale") = Eigen::Vector3d(1., 1., 1.), py::arg("assimp_hint"),
