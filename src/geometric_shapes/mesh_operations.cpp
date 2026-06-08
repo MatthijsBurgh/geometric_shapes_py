@@ -43,6 +43,7 @@
 #include "mesh_operations.hpp"
 
 #include <iostream>
+#include <iterator>
 #include <sstream>
 #include <vector>
 
@@ -62,10 +63,8 @@ void define_mesh_operations(py::module& m)
   m.def(
       "create_mesh_from_binary",
       [](std::istream& stream, const Eigen::Vector3d& scale, const std::string& assimp_hint = std::string()) {
-        size_t buffer_size = stream.gcount();
-        char buffer[buffer_size];
-        stream >> buffer;
-        return createMeshFromBinary(buffer, buffer_size, scale, assimp_hint);
+        std::vector<char> buffer(std::istreambuf_iterator<char>(stream), std::istreambuf_iterator<char>());
+        return createMeshFromBinary(buffer.data(), buffer.size(), scale, assimp_hint);
       },
       py::arg("binary_stream"), py::arg("scale") = Eigen::Vector3d(1., 1., 1.), py::arg("assimp_hint"),
       R"( Load a mesh from a binary stream that contains a mesh that can be loaded by assimp.)");
